@@ -373,6 +373,11 @@ impl ReadBytes for MediaSourceStream {
     fn pos(&self) -> u64 {
         self.abs_pos - self.unread_buffer_len() as u64
     }
+
+    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()> {
+        self.seek(pos).unwrap();
+        return Ok(())
+    }
 }
 
 impl SeekBuffered for MediaSourceStream {

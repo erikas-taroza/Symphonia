@@ -131,4 +131,8 @@ impl<B: ReadBytes, M: Monitor> ReadBytes for MonitorStream<B, M> {
     fn pos(&self) -> u64 {
         self.inner.pos()
     }
+
+    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()> {
+        self.inner.seek_bytes(pos)
+    }
 }

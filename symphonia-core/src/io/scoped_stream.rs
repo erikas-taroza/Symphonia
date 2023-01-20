@@ -156,6 +156,10 @@ impl<B: ReadBytes> ReadBytes for ScopedStream<B> {
     fn pos(&self) -> u64 {
         self.inner.pos()
     }
+
+    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()> {
+        self.inner.seek_bytes(pos)
+    }
 }
 
 impl<B: ReadBytes + SeekBuffered> SeekBuffered for ScopedStream<B> {

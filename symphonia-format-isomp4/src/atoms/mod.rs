@@ -416,7 +416,7 @@ impl<B: ReadBytes> AtomIterator<B> {
         let cur_pos = self.reader.pos();
 
         if cur_pos < self.next_atom_pos {
-            self.reader.ignore_bytes(self.next_atom_pos - cur_pos)?;
+            self.reader.seek_bytes(std::io::SeekFrom::Start(self.next_atom_pos))?;
         }
         else if cur_pos > self.next_atom_pos {
             // This is very bad, either the atom's length was incorrect or the demuxer erroroneously
