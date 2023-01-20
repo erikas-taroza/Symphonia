@@ -6,6 +6,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 use std::cmp;
+use std::convert::TryInto;
 use std::io;
 
 use super::{FiniteStream, ReadBytes};
@@ -196,11 +197,23 @@ impl<'a> ReadBytes for BufReader<'a> {
             std::io::SeekFrom::Start(pos) => pos as usize,
             std::io::SeekFrom::Current(pos) => {
                 let pos = cur_pos as i64 + pos;
-                pos as usize
+
+                pos.try_into().map_err(|_| {
+                    std::io::Error::new(
+                        std::io::ErrorKind::InvalidInput, 
+                        format!("Invalid seek: {pos}")
+                    )
+                })?
             },
             std::io::SeekFrom::End(pos) => {
                 let pos = self.buf.len() as i64 + pos;
-                pos as usize
+
+                pos.try_into().map_err(|_| {
+                    std::io::Error::new(
+                        std::io::ErrorKind::InvalidInput, 
+                        format!("Invalid seek: {pos}")
+                    )
+                })?
             },
         };
 
