@@ -385,14 +385,18 @@ impl FormatReader for IsoMp4Reader {
                     // The mdat atom contains the codec bitstream data. For segmented streams, a
                     // moof + mdat pair is required for playback. If the source is unseekable then
                     // the format reader cannot skip past these atoms without dropping samples.
-                    if !is_seekable {
-                        // If the moov atom hasn't been seen before the moof and/or mdat atom, and
-                        // the stream is not seekable, then the mp4 is not streamable.
-                        if moov.is_none() || ftyp.is_none() {
-                            warn!("mp4 is not streamable.");
-                        }
+                    // if !is_seekable {
+                    //     // If the moov atom hasn't been seen before the moof and/or mdat atom, and
+                    //     // the stream is not seekable, then the mp4 is not streamable.
+                    //     if moov.is_none() || ftyp.is_none() {
+                    //         warn!("mp4 is not streamable.");
+                    //     }
 
-                        // The remainder of the stream will be read incrementally.
+                    //     // The remainder of the stream will be read incrementally.
+                    //     break;
+                    // }
+
+                    if moov.is_some() && ftyp.is_some() {
                         break;
                     }
                 }
