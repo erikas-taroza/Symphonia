@@ -6,7 +6,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 use std::cmp;
-use std::convert::TryInto;
 use std::io;
 
 use super::{FiniteStream, ReadBytes};
@@ -190,36 +189,8 @@ impl<'a> ReadBytes for BufReader<'a> {
         self.pos as u64
     }
 
-    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()> {
-        let cur_pos = self.pos;
-        
-        let pos: usize = match pos {
-            std::io::SeekFrom::Start(pos) => pos as usize,
-            std::io::SeekFrom::Current(pos) => {
-                let pos = cur_pos as i64 + pos;
-
-                pos.try_into().map_err(|_| {
-                    std::io::Error::new(
-                        std::io::ErrorKind::InvalidInput, 
-                        format!("Invalid seek: {pos}")
-                    )
-                })?
-            },
-            std::io::SeekFrom::End(pos) => {
-                let pos = self.buf.len() as i64 + pos;
-
-                pos.try_into().map_err(|_| {
-                    std::io::Error::new(
-                        std::io::ErrorKind::InvalidInput, 
-                        format!("Invalid seek: {pos}")
-                    )
-                })?
-            },
-        };
-
-        self.pos = pos;
-
-        Ok(())
+    fn seek_bytes(&mut self, _: u64) -> io::Result<()> {
+        unimplemented!()
     }
 }
 

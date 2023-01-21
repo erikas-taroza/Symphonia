@@ -368,7 +368,7 @@ pub trait ReadBytes {
     /// Gets the position of the stream.
     fn pos(&self) -> u64;
 
-    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()>;
+    fn seek_bytes(&mut self, pos: u64) -> io::Result<()>;
 }
 
 impl<'b, R: ReadBytes> ReadBytes for &'b mut R {
@@ -423,7 +423,7 @@ impl<'b, R: ReadBytes> ReadBytes for &'b mut R {
     }
 
     #[inline(always)]
-    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()> {
+    fn seek_bytes(&mut self, pos: u64) -> io::Result<()> {
         (*self).seek_bytes(pos)
     }
 }

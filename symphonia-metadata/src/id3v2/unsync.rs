@@ -183,7 +183,7 @@ impl<B: ReadBytes + FiniteStream> ReadBytes for UnsyncStream<B> {
         unimplemented!();
     }
 
-    fn seek_bytes(&mut self, pos: std::io::SeekFrom) -> io::Result<()> {
+    fn seek_bytes(&mut self, pos: u64) -> io::Result<()> {
         self.inner.seek_bytes(pos)
     }
 }
